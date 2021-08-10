@@ -1,1 +1,1 @@
-cat words.txt | xargs -n1 echo | sort | uniq -c | sort -r -k 1 | awk '{print $2 \s $1}'
+cat words.txt | xargs -n1 echo | sort | uniq -c | sort -r -k 1 | awk '{print $2" "$1}'
