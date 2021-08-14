@@ -1,0 +1,55 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+//填数问题
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        //init
+        List<List<Integer>> res = new ArrayList<>();
+        int[] visited = new int[nums.length];
+        //backtrack
+        backtrack(nums, res, new ArrayList<Integer>(), visited);
+        //res
+        return res;
+    }
+
+    private void backtrack(int[] nums, List<List<Integer>> res, ArrayList<Integer> tmp, int[] visited) {
+        //solution
+        if (tmp.size() == nums.length) {
+            res.add(new ArrayList<>(tmp));
+            return;
+        }
+        //每个位置有几种选择
+        for (int i = 0; i < nums.length; i++) {
+            //filter
+            if (visited[i] == 1)
+                continue;
+            //mark
+            visited[i] = 1;
+            //choose
+            tmp.add(nums[i]);
+            backtrack(nums, res, tmp, visited);
+            //back
+            visited[i] = 0;
+            tmp.remove(tmp.size() - 1);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        int[] nums = new int[n];
+        for (int i = 0; i < n; i++) {
+            nums[i]=scanner.nextInt();
+        }
+        Solution solution = new Solution();
+        List<List<Integer>> res = solution.permute(nums);
+//        for (List<Integer> list : res) {
+//            for (Integer integer : list) {
+//                System.out.print(integer+" ");
+//            }
+//            System.out.println();
+//        }
+    }
+}
