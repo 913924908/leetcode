@@ -1,0 +1,57 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+//填数问题
+class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        //init
+        List<List<Integer>> res = new ArrayList<>();
+        int[] visited = new int[nums.length];
+        Arrays.sort(nums);
+        //backtrack
+        backtrack(nums, res, new ArrayList<Integer>(), visited);
+        //res
+        return res;
+    }
+
+    private void backtrack(int[] nums, List<List<Integer>> res, ArrayList<Integer> tmp, int[] visited) {
+        //solution
+        if (tmp.size() == nums.length) {
+            res.add(new ArrayList<>(tmp));
+            return;
+        }
+        //choice
+        for (int i = 0; i < nums.length; i++) {
+            //filter prune
+            if (visited[i] == 1 || (i > 0 && nums[i] == nums[i - 1] && visited[i - 1] == 0))//两个值一样，且以后一个开头
+                continue;
+            //mark
+            visited[i] = 1;
+            //choose
+            tmp.add(nums[i]);
+            backtrack(nums, res, tmp, visited);
+            //back
+            visited[i] = 0;
+            tmp.remove(tmp.size() - 1);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        int[] nums = new int[n];
+        for (int i = 0; i < n; i++) {
+            nums[i] = scanner.nextInt();
+        }
+        Solution solution = new Solution();
+        List<List<Integer>> res = solution.permuteUnique(nums);
+//        for (List<Integer> list : res) {
+//            for (Integer integer : list) {
+//                System.out.print(integer+" ");
+//            }
+//            System.out.println();
+//        }
+    }
+}
