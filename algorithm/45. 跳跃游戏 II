@@ -1,0 +1,58 @@
+import com.sun.security.jgss.GSSUtil;
+
+import java.util.Scanner;
+
+class Solution {
+    //dp[i] 从i跳到数组最后一个位置的最少步数
+    //dp[i]=1 (n-i)==nums[i]
+    //dp[i]=1+dp[i+1]
+    //dp[i]=2+dp[i+2]
+    //...
+    //dp[i]=k+dp[i+k] k>=1&&k<=nums[i]
+    public static int[] cache;
+
+    public int jump(int[] nums) {
+        //init
+        int n = nums.length;
+        cache = new int[n];
+        for (int i = 0; i < n; i++) {
+            cache[i] = 1000000;
+        }
+        //dp
+        int res = dp(nums, 0, nums.length);
+        return res;
+    }
+
+    private int dp(int[] nums, int i, int n) {
+        //cache
+        if (cache[i] != 1000000) {
+            return cache[i];
+        }
+        //base case
+        if (i == n - 1)
+            return 0;
+        //dp
+        if (nums[i] >= (n - i - 1)) {
+            cache[i] = 1;
+            //System.out.println(i);
+        }
+        for (int k = 1; k <= nums[i] && i + k < n; k++) {
+            cache[i] = Math.min(cache[i], 1 + dp(nums, i + k, n));
+        }
+        //System.out.println(i+"*****"+cache[i]);
+        return cache[i];
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int n;
+        n = scanner.nextInt();
+        int[] nums = new int[n];
+        for (int i = 0; i < n; i++) {
+            nums[i] = scanner.nextInt();
+        }
+        Solution solution = new Solution();
+        int res = solution.jump(nums);
+        //System.out.println(res);
+    }
+}
